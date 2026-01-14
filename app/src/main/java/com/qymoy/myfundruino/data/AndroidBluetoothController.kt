@@ -32,7 +32,7 @@ class AndroidBluetoothController(
     private val deviceGatt = MutableStateFlow<BluetoothGatt?>(null)
 
     override val scannedDevices = MutableStateFlow<List<BluetoothDeviceDomain>>(emptyList())
-    override val messages = MutableStateFlow("Welcome to the terminal!")
+    override val messages = MutableStateFlow("")
     override val connectedTo = MutableStateFlow<BluetoothDeviceDomain?>(null)
 
 
@@ -103,10 +103,8 @@ class AndroidBluetoothController(
             )
 
             val received = gatt.readCharacteristic(char)
-            println("Delivered: $received")
 
-            if (received) continuation.resume(true)
-            else continuation.resume(false)
+            continuation.resume(received)
             continuation.invokeOnCancellation {
                 println("Delivered: canceled!")
             }
